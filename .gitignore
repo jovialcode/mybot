@@ -1,0 +1,11 @@
+#gradle
+.gradle
+
+#intellij
+.idea
+
+#build
+build
+
+#library
+lib
