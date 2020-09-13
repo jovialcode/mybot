@@ -9,3 +9,6 @@ build
 
 #library
 lib
+
+#Key파일
+src/main/resources/env.properties

@@ -6,7 +6,7 @@ plugins {
 group 'org.jovialcode'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.9
 
 repositories {
     jcenter()
@@ -21,6 +21,8 @@ dependencies {
     //runtime layer
     implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'ch.qos.logback:logback-classic:1.2.3'
+    implementation 'org.jsoup:jsoup:1.13.1'
+    implementation 'com.google.api-client:google-api-client:1.30.10'
 
     //test layer
     testCompileOnly 'org.projectlombok:lombok:1.18.12'
