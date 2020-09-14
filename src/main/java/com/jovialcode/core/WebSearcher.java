@@ -1,8 +1,6 @@
 package com.jovialcode.core;
 
-import com.jovialcode.config.WebConst.URLConst;
 import com.jovialcode.model.vo.SearchVO;
-import com.jovialcode.model.vo.WebSearchVO;
 import com.jovialcode.service.searcher.APISearcher;
 import com.jovialcode.service.searcher.GoogleAPISearcher;
 import org.jsoup.Jsoup;
@@ -10,9 +8,7 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 //TODO API호출해서 사용하는 방법과
 //TODO URL 규칙 찾아서 크롤링을 사용하는 방법이 다르겠다.
@@ -21,14 +17,6 @@ import java.util.Map;
 //검색하고 평가하는건 다른 역할이겠군.
 //Finder에서 find의 전략이 바뀔 수 있다고 생각한다.
 public class WebSearcher implements DataSearcher{
-
-    public static Map<String, String> BASE_URL;
-    static {
-        BASE_URL = new HashMap<>();
-        BASE_URL.put(URLConst.NAVER.name(), URLConst.NAVER.getUrl());
-        BASE_URL.put(URLConst.DAUM.name(), URLConst.DAUM.getUrl());
-        BASE_URL.put(URLConst.GOOGLE.name(), URLConst.GOOGLE.getUrl());
-    }
 
     @Override
     public void search(SearchVO searchVO) {
