@@ -3,6 +3,7 @@ package com.jovialcode.core;
 import com.jovialcode.model.vo.SearchVO;
 import com.jovialcode.service.searcher.APISearcher;
 import com.jovialcode.service.searcher.GoogleAPISearcher;
+import com.jovialcode.service.searcher.NaverAPISearcher;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -17,7 +18,6 @@ import java.util.List;
 //검색하고 평가하는건 다른 역할이겠군.
 //Finder에서 find의 전략이 바뀔 수 있다고 생각한다.
 public class WebSearcher implements DataSearcher{
-
     @Override
     public void search(SearchVO searchVO) {
         searchOnBaseURL(searchVO.getSearchWord());
@@ -28,8 +28,9 @@ public class WebSearcher implements DataSearcher{
      * 여기서 각 API search하는 걸로 나눠야함.
      * */
     protected void searchOnBaseURL(String searchWord){
-        APISearcher apiSearcher = new GoogleAPISearcher();
-        apiSearcher.search(searchWord);
+        APISearcher apiSearcher = new NaverAPISearcher();
+        String response = apiSearcher.search(searchWord);
+        System.out.println(response);
     }
 
     protected Document getDocument(String url){

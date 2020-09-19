@@ -2,68 +2,76 @@ package com.jovialcode.service.searcher;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * APISearcher
+ * - 패턴 : 템플릿 메서드
+ * */
 public abstract class APISearcher{
-    private String basUrl;
-    private String apiKey;
-    private HashMap<String,String> appendix;
     private static final int HTTP_REQUEST_TIMEOUT = 3 * 600000;
 
-    public APISearcher(String basUrl, String apiKey) {
-        this.basUrl = basUrl;
-        this.apiKey = apiKey;
-    }
+    public APISearcher() { }
 
-    public APISearcher(String basUrl, String apiKey, HashMap<String,String> appendix) {
-        this.basUrl = basUrl;
-        this.apiKey = apiKey;
-        this.appendix = appendix;
-    }
+    public String search(String word){
+        String apiUrl = makeQuery(word);
+        Map<String, String> requestHeaders = makeRequestHeader();
 
-    protected String getConnection(String query) throws IOException {
-        URL url = new URL(query);
-        String output = null;
-        HttpURLConnection conn = null;
-        BufferedReader br = null;
-        try{
-            conn = (HttpURLConnection) url.openConnection();
+        HttpURLConnection  con = getConnection(apiUrl);
 
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Accept", "application/json");
-
-            br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-
-            while ((output = br.readLine()) != null) {
-
-                if(output.contains("\"link\": \"")){
-                    String link= output.substring(output.indexOf("\"link\": \"")+("\"link\": \"").length(), output.indexOf("\","));
-                }
+        try {
+            con.setRequestMethod("GET");
+            for(Map.Entry<String, String> header :requestHeaders.entrySet()) {
+                con.setRequestProperty(header.getKey(), header.getValue());
             }
 
+            int responseCode = con.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
+                return readBody(con.getInputStream());
+            } else { // 에러 발생
+                return readBody(con.getErrorStream());
+            }
         } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            conn.disconnect();
-            br.close();
+            throw new RuntimeException("API 요청과 응답 실패", e);
+        } finally {
+            con.disconnect();
         }
-        return output;
     }
 
-    public abstract Object search(String word);
+    private HttpURLConnection  getConnection(String apiUrl) {
+        try {
+            URL url = new URL(apiUrl);
+            return (HttpURLConnection)url.openConnection();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("API URL이 잘못되었습니다. : " + apiUrl, e);
+        } catch (IOException e) {
+            throw new RuntimeException("연결이 실패했습니다. : " + apiUrl, e);
+        }
+    }
+
+    private static String readBody(InputStream body){
+        InputStreamReader streamReader = new InputStreamReader(body);
+
+        try (BufferedReader lineReader = new BufferedReader(streamReader)) {
+            StringBuilder responseBody = new StringBuilder();
+
+            String line;
+            while ((line = lineReader.readLine()) != null) {
+                responseBody.append(line);
+            }
+
+            return responseBody.toString();
+        } catch (IOException e) {
+            throw new RuntimeException("API 응답을 읽는데 실패했습니다.", e);
+        }
+    }
 
     public abstract String makeQuery(String word);
 
-    public String getBasUrl() { return basUrl; }
-
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public void setAppendix(HashMap<String, String> appendix) {
-        this.appendix = appendix;
-    }
+    public abstract Map<String, String> makeRequestHeader();
 }
