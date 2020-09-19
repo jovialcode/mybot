@@ -20,7 +20,7 @@ public class GoogleAPISearcher extends APISearcher {
 
     public GoogleAPISearcher() {
         this.APIkey = PropertyUtil.getProperty("GOOGLE_API_KEY");
-        this.URL = PropertyUtil.getProperty("GOOGLE_URL");
+        this.URL = PropertyUtil.getProperty("GOOGLE_API_URL");
         this.searchEngineID = PropertyUtil.getProperty("GOOGLE_SEARCH_ENGINE_ID");
     }
 

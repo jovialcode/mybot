@@ -1,5 +1,6 @@
 package com.jovialcode;
 
+import com.jovialcode.config.SearchConst;
 import com.jovialcode.core.DataSearcher;
 import com.jovialcode.core.WebSearcher;
 import com.jovialcode.model.vo.SearchVO;
@@ -10,6 +11,6 @@ public class Application {
         target.setSearchWord("Hello");
 
         DataSearcher dataSearcher = new WebSearcher();
-        dataSearcher.search(target);
+        dataSearcher.search(target, SearchConst.SEARCH_WAY.CROWLING);
     }
 }

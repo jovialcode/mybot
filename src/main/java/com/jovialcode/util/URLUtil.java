@@ -1,6 +1,7 @@
 package com.jovialcode.util;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.stream.Collectors;
@@ -19,6 +20,15 @@ public class URLUtil {
         return word;
     }
 
+    public static String decodeURL(String word){
+        try {
+            word = URLDecoder.decode(word, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("검색어 디코딩 실패",e);
+        }
+        return word;
+    }
+
     public static String makeQuery(HashMap<String,String> param){
         return param.entrySet()
                 .stream()
@@ -27,6 +37,6 @@ public class URLUtil {
     }
 
     public static String makeQuery(String root, HashMap<String,String> param){
-        return root + "?" + makeQuery(param);
+        return root.trim() + "?" + makeQuery(param);
     }
 }

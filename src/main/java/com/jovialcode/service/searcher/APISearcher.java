@@ -1,5 +1,8 @@
 package com.jovialcode.service.searcher;
 
+import com.jovialcode.model.vo.SearchVO;
+import com.jovialcode.util.URLUtil;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +16,7 @@ import java.util.Map;
  * APISearcher
  * - 패턴 : 템플릿 메서드
  * */
-public abstract class APISearcher{
+public abstract class APISearcher implements Searcher {
     private static final int HTTP_REQUEST_TIMEOUT = 3 * 600000;
 
     public APISearcher() { }
@@ -32,9 +35,9 @@ public abstract class APISearcher{
 
             int responseCode = con.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
-                return readBody(con.getInputStream());
+                return getBody(con.getInputStream());
             } else { // 에러 발생
-                return readBody(con.getErrorStream());
+                return getBody(con.getErrorStream());
             }
         } catch (IOException e) {
             throw new RuntimeException("API 요청과 응답 실패", e);
@@ -43,7 +46,7 @@ public abstract class APISearcher{
         }
     }
 
-    private HttpURLConnection  getConnection(String apiUrl) {
+    private HttpURLConnection getConnection(String apiUrl) {
         try {
             URL url = new URL(apiUrl);
             return (HttpURLConnection)url.openConnection();
@@ -54,7 +57,7 @@ public abstract class APISearcher{
         }
     }
 
-    private static String readBody(InputStream body){
+    private String getBody(InputStream body){
         InputStreamReader streamReader = new InputStreamReader(body);
 
         try (BufferedReader lineReader = new BufferedReader(streamReader)) {
@@ -70,8 +73,6 @@ public abstract class APISearcher{
             throw new RuntimeException("API 응답을 읽는데 실패했습니다.", e);
         }
     }
-
-    public abstract String makeQuery(String word);
 
     public abstract Map<String, String> makeRequestHeader();
 }
