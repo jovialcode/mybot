@@ -10,10 +10,10 @@ import static com.jovialcode.factory.SocketFactory.socketFactory;
 
 public abstract class Crawler implements Searcher{
     @Override
-    public String search(String word) {
+    public Document search(String word) {
         String query = makeQuery(word);
         Document document = getDocument(query);
-        return document.body().toString();
+        return document;
     }
 
     protected Document getDocument(String url){

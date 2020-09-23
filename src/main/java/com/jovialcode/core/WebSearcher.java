@@ -1,34 +1,38 @@
 package com.jovialcode.core;
 
 import com.jovialcode.config.SearchConst.SEARCH_WAY;
+import com.jovialcode.model.vo.RawDataVO;
 import com.jovialcode.model.vo.SearchVO;
 import com.jovialcode.service.searcher.APISearcher;
 import com.jovialcode.service.searcher.Crawler;
 import com.jovialcode.service.searcher.GoogleCrawler;
 import com.jovialcode.service.searcher.NaverAPISearcher;
+import org.jsoup.nodes.Document;
 
 public class WebSearcher implements DataSearcher{
     @Override
-    public void search(SearchVO searchVO, SEARCH_WAY searchWay) {
+    public RawDataVO search(SearchVO searchVO, SEARCH_WAY searchWay) {
+        RawDataVO rawDataVO = new RawDataVO();
         switch (searchWay){
             case API:{
-                searchOnAPI(searchVO);
+                rawDataVO.setInputString(searchOnAPI(searchVO));
                 break;
             }
             case CROWLING:{
-                searchOnCrawling(searchVO);
+                rawDataVO.setInputDocument(searchOnCrawling(searchVO));
                 break;
             }
         }
+        return rawDataVO;
     }
 
-    protected void searchOnAPI(SearchVO searchVO){
+    protected String searchOnAPI(SearchVO searchVO){
         APISearcher apiSearcher = new NaverAPISearcher();
-        String response = apiSearcher.search(searchVO.getSearchWord());
+        return apiSearcher.search(searchVO.getSearchWord());
     }
 
-    protected void searchOnCrawling(SearchVO searchVO){
+    protected Document searchOnCrawling(SearchVO searchVO){
         Crawler crawler = new GoogleCrawler();
-        String response = crawler.search(searchVO.getSearchWord());
+        return crawler.search(searchVO.getSearchWord());
     }
 }
