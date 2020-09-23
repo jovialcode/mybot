@@ -17,8 +17,6 @@ import java.util.Map;
  * - 패턴 : 템플릿 메서드
  * */
 public abstract class APISearcher implements Searcher {
-    private static final int HTTP_REQUEST_TIMEOUT = 3 * 600000;
-
     public APISearcher() { }
 
     public String search(String word){

@@ -1,6 +1,10 @@
 package com.jovialcode.core;
 
 import com.jovialcode.model.vo.DataVO;
+import org.jsoup.nodes.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WebParser implements DataParser<DataVO> {
 
@@ -9,5 +13,11 @@ public class WebParser implements DataParser<DataVO> {
         DataVO dataVO = new DataVO();
 
         return dataVO;
+    }
+
+    protected List<String> getATagList(Document document){
+        List<String> aTagList = new ArrayList<>();
+
+        return aTagList;
     }
 }
