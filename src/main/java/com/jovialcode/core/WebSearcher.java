@@ -33,6 +33,6 @@ public class WebSearcher implements DataSearcher{
 
     protected Document searchOnCrawling(SearchVO searchVO){
         Crawler crawler = new GoogleCrawler();
-        return crawler.search(searchVO.getSearchWord());
+        return (Document) crawler.search(searchVO.getSearchWord());
     }
 }

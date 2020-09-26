@@ -11,7 +11,7 @@ import com.jovialcode.service.parser.DocumentParser;
 public class Application {
     public static void main(String[] args){
         SearchVO target = new SearchVO();
-        target.setSearchWord("Hello");
+        target.setSearchWord("마이다스아이티");
 
         DataSearcher dataSearcher = new WebSearcher();
         RawDataVO rawDataVO = dataSearcher.search(target, SearchConst.SEARCH_WAY.CROWLING);

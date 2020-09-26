@@ -9,12 +9,6 @@ import java.io.IOException;
 import static com.jovialcode.factory.SocketFactory.socketFactory;
 
 public abstract class Crawler implements Searcher{
-    @Override
-    public Document search(String word) {
-        String query = makeQuery(word);
-        Document document = getDocument(query);
-        return document;
-    }
 
     protected Document getDocument(String url){
         Connection con = Jsoup.connect(url).timeout(HTTP_REQUEST_TIMEOUT).sslSocketFactory(socketFactory());

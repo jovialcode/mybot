@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 public class DocumentParser implements DataParser<Document, String> {
     public String parse(Document document) {
         Elements aTagList = getTagElements(document, "a");
+        Elements tagHasHrefAttribute = getElementsByAttribute(document, "href");
         List<String> hrefList = getAttributeList(aTagList, "href");
         List<String> filteredHrefList = filterHref(hrefList);
         return null;
@@ -30,6 +31,10 @@ public class DocumentParser implements DataParser<Document, String> {
 
     private Elements getTagElements(Document document, String tagName){
         return document.select(tagName);
+    }
+
+    private Elements getElementsByAttribute(Document document, String attributeName){
+        return document.getElementsByAttribute(attributeName);
     }
 
     private List<String> getAttributeList(Elements elements, String attributeName){

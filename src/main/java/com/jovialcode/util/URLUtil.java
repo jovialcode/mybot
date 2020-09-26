@@ -32,7 +32,7 @@ public class URLUtil {
     public static String makeQuery(HashMap<String,String> param){
         return param.entrySet()
                 .stream()
-                .map(e -> e.getKey().trim() + "=" + e.getValue().trim())
+                .map(e -> e.getKey().trim() + "=" + encodeURL(e.getValue().trim()))
                 .collect(Collectors.joining("&"));
     }
 
