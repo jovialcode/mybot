@@ -1,24 +1,27 @@
 package com.jovialcode.service.searcher;
 
+import com.jovialcode.service.searcher.rule.GoogleSearchRule;
 import com.jovialcode.service.searcher.strategy.SearchStrategy;
 import com.jovialcode.service.searcher.strategy.SeleniumStrategy;
 import com.jovialcode.util.PropertyUtil;
 import com.jovialcode.util.URLUtil;
-import org.openqa.selenium.WebElement;
 
-import javax.swing.text.Document;
 import java.util.HashMap;
+import java.util.List;
 
 public class GoogleCrawler extends Crawler {
-    private static final String URL = PropertyUtil.getProperty("GOOGLE_CRAWLER_URL");;
+    private static final String URL = PropertyUtil.getProperty("GOOGLE_CRAWLER_URL");
+    private SearchStrategy searchStrategy;
+
+    public GoogleCrawler(){
+        this.searchStrategy = new SeleniumStrategy();
+        this.searchStrategy.setSearchRule(new GoogleSearchRule());
+    }
 
     @Override
-    public Document search(String search) {
-        SearchStrategy<WebElement> searchStrategy = new SeleniumStrategy();
+    public String crawling(String search) {
         String query = makeQuery(search);
-        WebElement webElement = searchStrategy.search(query);
-        String value = webElement.toString();
-        return null;
+        return searchStrategy.search(query);
     }
 
     @Override
@@ -35,5 +38,9 @@ public class GoogleCrawler extends Crawler {
 //        param.put("uact", "lang_ko");
 
         return URLUtil.makeQuery(URL, param);
+    }
+
+    public void setSearchStrategy(SearchStrategy searchStrategy) {
+        this.searchStrategy = searchStrategy;
     }
 }

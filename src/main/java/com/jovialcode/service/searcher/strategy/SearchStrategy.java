@@ -1,5 +1,10 @@
 package com.jovialcode.service.searcher.strategy;
 
-public interface SearchStrategy<T> {
-    public T search(String query);
+import com.jovialcode.service.searcher.rule.SearchRule;
+
+import java.util.List;
+
+public interface SearchStrategy {
+    String search(String query);
+    void setSearchRule(SearchRule searchRule);
 }

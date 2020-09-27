@@ -1,7 +1,6 @@
-package com.jovialcode.service.searcher;
+package com.jovialcode.service.searcher.strategy;
 
-import com.jovialcode.model.vo.SearchVO;
-import com.jovialcode.util.URLUtil;
+import com.jovialcode.service.searcher.rule.SearchRule;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,26 +9,21 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
+import java.util.List;
 
-/**
- * APISearcher
- * - 패턴 : 템플릿 메서드
- * */
-public abstract class APISearcher implements Searcher {
-    public APISearcher() { }
+public class APIStrategy implements SearchStrategy {
 
-    public String search(String word){
-        String apiUrl = makeQuery(word);
-        Map<String, String> requestHeaders = makeRequestHeader();
+    @Override
+    public String search(String url) {
+        //Map<String, String> requestHeaders = makeRequestHeader();
 
-        HttpURLConnection  con = getConnection(apiUrl);
+        HttpURLConnection con = getConnection(url);
 
         try {
             con.setRequestMethod("GET");
-            for(Map.Entry<String, String> header :requestHeaders.entrySet()) {
-                con.setRequestProperty(header.getKey(), header.getValue());
-            }
+//            for(Map.Entry<String, String> header :requestHeaders.entrySet()) {
+//                con.setRequestProperty(header.getKey(), header.getValue());
+//            }
 
             int responseCode = con.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
@@ -46,8 +40,8 @@ public abstract class APISearcher implements Searcher {
 
     private HttpURLConnection getConnection(String apiUrl) {
         try {
-            URL url = new URL(apiUrl);
-            return (HttpURLConnection)url.openConnection();
+            java.net.URL url = new URL(apiUrl);
+            return (HttpURLConnection) url.openConnection();
         } catch (MalformedURLException e) {
             throw new RuntimeException("API URL이 잘못되었습니다. : " + apiUrl, e);
         } catch (IOException e) {
@@ -55,7 +49,7 @@ public abstract class APISearcher implements Searcher {
         }
     }
 
-    private String getBody(InputStream body){
+    private String getBody(InputStream body) {
         InputStreamReader streamReader = new InputStreamReader(body);
 
         try (BufferedReader lineReader = new BufferedReader(streamReader)) {
@@ -72,5 +66,10 @@ public abstract class APISearcher implements Searcher {
         }
     }
 
-    public abstract Map<String, String> makeRequestHeader();
+    @Override
+    public void setSearchRule(SearchRule searchRule) {
+
+    }
+
+    //public abstract Map<String, String> makeRequestHeader();
 }

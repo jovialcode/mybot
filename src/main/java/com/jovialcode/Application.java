@@ -7,6 +7,7 @@ import com.jovialcode.core.WebSearcher;
 import com.jovialcode.model.vo.RawDataVO;
 import com.jovialcode.model.vo.SearchVO;
 import com.jovialcode.service.parser.DocumentParser;
+import com.jovialcode.service.parser.StringParser;
 
 public class Application {
     public static void main(String[] args){
@@ -16,7 +17,7 @@ public class Application {
         DataSearcher dataSearcher = new WebSearcher();
         RawDataVO rawDataVO = dataSearcher.search(target, SearchConst.SEARCH_WAY.CROWLING);
 
-        DataParser dataParser = new DocumentParser();
-        dataParser.parse(rawDataVO.getInputDocument());
+        DataParser dataParser = new StringParser();
+        System.out.println(dataParser.parse(rawDataVO.getInputString()));
     }
 }
