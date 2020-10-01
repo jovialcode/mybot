@@ -23,12 +23,6 @@ public class DocumentParser implements DataParser<Document, String> {
                 .collect(Collectors.toList());
     }
 
-    private Boolean filterRules(String href){
-        Predicate<String> startHttps = e -> e.startsWith("https://");
-        Predicate<String> startWWW = e -> e.startsWith("www");
-        return startHttps.test(href) || startWWW.test(href);
-    }
-
     private Elements getTagElements(Document document, String tagName){
         return document.select(tagName);
     }

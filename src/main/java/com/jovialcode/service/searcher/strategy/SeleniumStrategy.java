@@ -1,7 +1,7 @@
 package com.jovialcode.service.searcher.strategy;
 
-import com.jovialcode.model.vo.SearchRuleVO;
-import com.jovialcode.service.searcher.rule.SearchRule;
+import com.jovialcode.config.SearchConst.SEARCH_STRATEGY;
+import com.jovialcode.model.vo.SearchVO;
 import com.jovialcode.util.PropertyUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -9,16 +9,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.time.Duration;
 
-public class SeleniumStrategy implements SearchStrategy {
+public class SeleniumStrategy extends AbstractSearchStrategy {
     public static final String WEB_DRIVER_ID = PropertyUtil.getProperty("WEB_DRIVER_ID");
     public static final String WEB_DRIVER_PATH = PropertyUtil.getProperty("WEB_DRIVER_PATH");
 
     private WebDriver driver;
-    private SearchRule searchRule;
 
     public SeleniumStrategy(){
         initDriver();
@@ -40,11 +37,21 @@ public class SeleniumStrategy implements SearchStrategy {
     }
 
     @Override
-    public String search(String query) {
-        List<String> result = new ArrayList<>();
+    public String search(SearchVO searchVO) {
+        String searchWord = searchVO.getWord();
         try{
-            driver.get(query);
+            driver.get(searchVO.getUrl());
+            WebElement searchInput = driver.findElement(By.xpath(searchVO.getXPath()));
+            if(searchInput == null){
+                throw new RuntimeException("ERROR.noElement");
+            }
+            //element 못 찾을 때 에러 반환
+            searchInput.sendKeys(searchWord);
+            searchInput.submit();
+            Thread.sleep(5000);
             return driver.getPageSource();
+        }catch(RuntimeException e){
+            e.printStackTrace();
         }catch (Exception e){
             e.printStackTrace();
         } finally {
@@ -54,7 +61,7 @@ public class SeleniumStrategy implements SearchStrategy {
     }
 
     @Override
-    public void setSearchRule(SearchRule searchRule) {
-        this.searchRule = searchRule;
+    public SEARCH_STRATEGY getSearchStrategy() {
+        return SEARCH_STRATEGY.SELENIUM;
     }
 }

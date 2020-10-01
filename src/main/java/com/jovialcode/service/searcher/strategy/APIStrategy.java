@@ -1,6 +1,7 @@
 package com.jovialcode.service.searcher.strategy;
 
-import com.jovialcode.service.searcher.rule.SearchRule;
+import com.jovialcode.config.SearchConst.SEARCH_STRATEGY;
+import com.jovialcode.model.vo.SearchVO;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,15 +10,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
-public class APIStrategy implements SearchStrategy {
+public class APIStrategy extends AbstractSearchStrategy {
 
     @Override
-    public String search(String url) {
+    public String search(SearchVO searchVO) {
         //Map<String, String> requestHeaders = makeRequestHeader();
 
-        HttpURLConnection con = getConnection(url);
+        HttpURLConnection con = getConnection(searchVO.getUrl());
 
         try {
             con.setRequestMethod("GET");
@@ -66,10 +66,11 @@ public class APIStrategy implements SearchStrategy {
         }
     }
 
-    @Override
-    public void setSearchRule(SearchRule searchRule) {
-
-    }
-
     //public abstract Map<String, String> makeRequestHeader();
+
+
+    @Override
+    public SEARCH_STRATEGY getSearchStrategy() {
+        return SEARCH_STRATEGY.API;
+    }
 }

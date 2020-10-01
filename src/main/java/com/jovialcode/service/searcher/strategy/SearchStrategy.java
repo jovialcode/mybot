@@ -1,10 +1,9 @@
 package com.jovialcode.service.searcher.strategy;
 
-import com.jovialcode.service.searcher.rule.SearchRule;
-
-import java.util.List;
+import com.jovialcode.config.SearchConst.SEARCH_STRATEGY;
+import com.jovialcode.model.vo.SearchVO;
 
 public interface SearchStrategy {
-    String search(String query);
-    void setSearchRule(SearchRule searchRule);
+    String search(SearchVO searchVO);
+    SEARCH_STRATEGY getSearchStrategy();
 }
