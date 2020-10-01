@@ -3,7 +3,12 @@ package com.jovialcode.util;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -11,6 +16,8 @@ import java.util.stream.Collectors;
  * 패턴 : 정적 클래스
  * */
 public class URLUtil {
+    public static Pattern urlPattern = Pattern.compile("(https?:\\/\\/|www)([^:\\/\\s'\")<]+)((\\/[^\\s/\\/)\";]+)*)?");
+
     public static String encodeURL(String word){
         try {
             word = URLEncoder.encode(word, "UTF-8");
@@ -38,5 +45,14 @@ public class URLUtil {
 
     public static String makeQuery(String root, HashMap<String,String> param){
         return root.trim() + "?" + makeQuery(param);
+    }
+
+    public static List<String> urlMatcher(String url){
+        Matcher matcher = urlPattern.matcher(url);
+        List<String> rs = new ArrayList<>();
+        while (matcher.find()) {
+            rs.add(matcher.group());
+        }
+        return rs;
     }
 }

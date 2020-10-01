@@ -1,8 +1,10 @@
 package com.jovialcode.service.parser;
 
+import com.jovialcode.util.URLUtil;
+
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class StringParser implements DataParser<String, String> {
@@ -12,11 +14,11 @@ public class StringParser implements DataParser<String, String> {
                 InputStream is = new ByteArrayInputStream(rq.getBytes());
                 BufferedReader br = new BufferedReader(new InputStreamReader(is));
         ){
-            Stream<String> lines = br.lines();
-            List<String> hrefList = lines
-                    .filter(line -> filterRules(line))
-                    .map(line -> getUrlPattern(line))
-                    .collect(Collectors.toList());
+            List<String> hrefList = new ArrayList<>();
+            Stream<String> lines = br.lines().filter(line -> filterRules(line));
+            lines.forEach(
+                    line-> URLUtil.urlMatcher(line).forEach(link ->hrefList.add(link))
+            );
             return hrefList.get(0);
         }catch (IOException e){
             e.printStackTrace();
