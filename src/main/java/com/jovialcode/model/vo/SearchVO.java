@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class SearchVO {
     private Date createTime;
+    private Integer depth = 0;
 
     private String word;
     private String url;
@@ -21,6 +22,14 @@ public class SearchVO {
 
     public Date getCreateTime() {
         return createTime;
+    }
+
+    public Integer getDepth() {
+        return depth;
+    }
+
+    public void setDepth(Integer depth) {
+        this.depth = depth;
     }
 
     public String getWord() {
