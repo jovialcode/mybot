@@ -35,4 +35,12 @@ public class StringParserTest{
         );
         Assert.assertEquals(5, rs.size());
     }
+
+    @Test
+    public void 연산자_확인(){
+        Integer a = 10;
+        int b = 11;
+
+        Assert.assertEquals(21, a+ b);
+    }
 }
