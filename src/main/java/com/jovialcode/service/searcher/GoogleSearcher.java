@@ -13,14 +13,13 @@ public class GoogleSearcher extends Searcher {
     private final String URL = PropertyUtil.getProperty("GOOGLE_SEARCH_URL");
 
     @Override
-    public String setSearchVO(SearchVO searchVO) {
+    public void setSearchVO(SearchVO searchVO) {
         searchVO.setUrl(URL);
         searchVO.setIsQuery(true);
         if (searchStrategy.getSearchStrategy().equals(SearchConst.SEARCH_STRATEGY.SELENIUM)){
             searchVO.setXPath(PropertyUtil.getProperty("GOOGLE_SEARCH_XPATH"));
             searchVO.setIsQuery(false);
         }
-        return null;
     }
 
     @Override

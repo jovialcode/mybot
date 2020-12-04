@@ -1,20 +1,14 @@
 package com.jovialcode.service.parser;
 
-import com.jovialcode.config.SearchConst;
-import com.jovialcode.core.WebSearcher;
-import com.jovialcode.model.vo.SearchVO;
-import com.jovialcode.service.searcher.Searcher;
-import com.jovialcode.service.searcher.strategy.SeleniumStrategy;
 import com.jovialcode.util.URLUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Map;
 
 public class StringParserTest{
     @Before
@@ -41,6 +35,20 @@ public class StringParserTest{
         Integer a = 10;
         int b = 11;
 
-        Assert.assertEquals(21, a+ b);
+        Assert.assertEquals(21, a + b);
+    }
+
+    @Test
+    public void 연산자_double(){
+        double d1 = 3;
+        double d2 = 0.01;
+        System.out.println(d1 + d2);
+    }
+
+    @Test
+    public void 맵_테스트(){
+        Map<String, List<String>> mapList = new HashMap<>();
+        mapList.put("레옹", new ArrayList<>());
+        mapList.get("레옹").add("레옹아들");
     }
 }

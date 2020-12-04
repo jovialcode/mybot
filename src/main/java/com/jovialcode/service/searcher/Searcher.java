@@ -36,7 +36,7 @@ public abstract class Searcher {
         return null;
     }
 
-    public abstract String setSearchVO(SearchVO searchVO);
+    public abstract void setSearchVO(SearchVO searchVO);
 
     protected Document getDocument(String url){
         Connection con = Jsoup.connect(url).timeout(HTTP_REQUEST_TIMEOUT).sslSocketFactory(socketFactory());
